@@ -1,0 +1,12 @@
+title: PartOne
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  job:
+    type: string
+required:
+  - id
+  - name

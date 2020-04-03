@@ -1,0 +1,14 @@
+openapi: 3.0.0
+info:
+  title: api-public
+  version: '1.0'
+  contact:
+    name: CDR
+    url: cdr.com
+    email: contact@cdr.com
+servers:
+  - url: 'http://localhost:3000'
+    description: SandBox
+paths: {}
+components:
+  schemas: {}

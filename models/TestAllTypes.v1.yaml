@@ -1,0 +1,38 @@
+title: TestAllTypes
+type: object
+properties:
+  id:
+    type: string
+    format: date
+  test1:
+    type: array
+    uniqueItems: true
+    maxItems: 150
+    minItems: 5
+    items:
+      type: string
+      minLength: 2
+      maxLength: 5
+      pattern: '[a-m]*'
+  test2:
+    type: string
+    minLength: 2
+    maxLength: 5
+    pattern: '[a-m]*'
+  test3:
+    oneOf:
+      - $ref: ./PingPongCommon.v1.yaml
+      - $ref: ./PongResponse.v1.yaml
+  test4:
+    anyOf:
+      - type: array
+        items:
+          $ref: ./PingPongCommon.v1.yaml
+      - type:
+          - number
+          - string
+      - type:
+          - integer
+          - 'null'
+required:
+  - id

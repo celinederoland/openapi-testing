@@ -1,0 +1,4 @@
+title: Order
+allOf:
+  - $ref: ./Payable.v1.yaml
+  - $ref: ./OrderSpec.v1.yaml

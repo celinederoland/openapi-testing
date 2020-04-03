@@ -1,0 +1,7 @@
+title: PartTwo
+type: object
+properties:
+  age:
+    type: integer
+required:
+  - age

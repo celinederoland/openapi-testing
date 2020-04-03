@@ -1,0 +1,13 @@
+title: Payable
+type: object
+properties:
+  type:
+    type: string
+    enum:
+      - order
+      - invoice
+  amount:
+    type: number
+required:
+  - type
+  - amount

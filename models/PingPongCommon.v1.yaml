@@ -1,0 +1,16 @@
+title: PingPongCommon
+type: object
+properties:
+  id:
+    type: string
+    description: |-
+      PingPongCommon Id Description, *TOTO BOLD* Tu crois que j'ai le droit de mettre du MD ici
+      ```php
+      Et même du code ?
+      ```
+  response:
+    $ref: ./PongResponse.v1.yaml
+  date:
+    $ref: ./Timetamp.v1.yaml
+required:
+  - id

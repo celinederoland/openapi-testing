@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+  title: api-private
+  version: '1.0'
+  contact:
+    name: Céline de Roland
+  description: This is My Private API
+servers:
+  - url: 'http://localhost:3100'
+    description: SandBox
+paths:
+  /invoicing/private/ping:
+    get:
+      summary: ping a GET
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+      operationId: get-invoicing-private-ping
+      description: This is my Ping EndPoint Description
+    post:
+      summary: ping a POST
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ping:
+                    type: string
+                  ack:
+                    type: integer
+      operationId: post-invoicing-private-ping
+      description: This is my Ping Pong POST description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ack:
+                  type: integer
+    put:
+      summary: ping a PUT
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ack:
+                    type: integer
+                  ping:
+                    type: string
+                  test:
+                    type: boolean
+      operationId: put-invoicing-private-ping
+      description: This is my PUT endpoint description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                test:
+                  type: boolean
+    delete:
+      summary: ping a DELETE
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ack:
+                    type: boolean
+      operationId: delete-invoicing-private-ping
+      description: This is my DELETE ping pong endpoint
+  /private/invoicing/sec-ping:
+    get:
+      summary: ping a GET
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/PongResponse.v1.yaml
+              examples:
+                example-second-pong-get-query:
+                  value: pong
+      operationId: get-private-invoicing-sec-ping
+      description: Second Ping EndPoint
+    post:
+      summary: ping a POST
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+      operationId: post-private-invoicing-sec-ping
+      description: |+
+        # This is the POST endpoint for sec-ping
+
+        - say me pong
+        - I am ready to ack you
+        - Feed me with an *ack number* -plz-
+
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/PingPongCommon.v1.yaml
+        description: |-
+          # Your body must be valide
+
+          If you do this I'll do that. THKS
+    put:
+      summary: ping a PUT
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+      operationId: put-private-invoicing-sec-ping
+      description: Toto
+    delete:
+      summary: ping a DELETE
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+      operationId: delete-private-invoicing-sec-ping
+      description: Toto
+  /types/all-of-my-tests:
+    get:
+      summary: combine part one and part two
+      tags:
+        - TESTS
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingPong'
+      operationId: get-types-all-of-my-tests
+      description: Totot
+    post:
+      summary: ''
+      operationId: post-types-all-of-my-tests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                enum:
+                  - a
+                  - B
+      description: Toto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../models/PartOne.v1.yaml
+                - $ref: ../models/PartTwo.v1.yaml
+                - type: object
+            examples: {}
+      tags:
+        - TESTS
+    put:
+      summary: ''
+      operationId: put-types-all-of-my-tests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      description: Will try one of + discriminator
+      tags:
+        - TESTS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: ../models/Invoice.v1.yaml
+                - $ref: ../models/Order.v1.yaml
+              discriminator: 
+                propertyName: type
+                mapping:
+                  invoice: ../models/Invoice.v1.yaml
+                  order: ../models/Order.v1.yaml
+components:
+  schemas:
+    PingPong:
+      title: PingPong
+      type: object
+      x-examples: {}
+      properties:
+        id:
+          type: string
+        response:
+          $ref: ../models/PongResponse.v1.yaml
+      description: This is PingPong Inside Model
+tags:
+  - name: AlphaB
+    description: Coucou
+  - name: BASICS
+    description: |-
+      #MarkDown Lover
+      Hello *Whaou* even there I can markdow it
+  - name: TESTS
+    description: "ben comme son nom l'indique lol"

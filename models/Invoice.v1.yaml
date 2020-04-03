@@ -1,0 +1,4 @@
+title: Invoice
+allOf:
+  - $ref: ./Payable.v1.yaml
+  - $ref: ./InvoiceSpec.v1.yaml
