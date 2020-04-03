@@ -1,0 +1,370 @@
+openapi: 3.0.0
+info:
+  title: api-private
+  version: '1.0'
+  contact:
+    name: Céline de Roland
+  description: This is My Private API
+servers:
+  - url: 'http://localhost:3100'
+    description: SandBox
+paths:
+  /invoicing/private/ping:
+    get:
+      summary: ping a GET
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+      operationId: get-invoicing-private-ping
+      description: This is my Ping EndPoint Description
+    post:
+      summary: ping a POST
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ping:
+                    type: string
+                  ack:
+                    type: integer
+      operationId: post-invoicing-private-ping
+      description: This is my Ping Pong POST description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ack:
+                  type: integer
+    put:
+      summary: ping a PUT
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ack:
+                    type: integer
+                  ping:
+                    type: string
+                  test:
+                    type: boolean
+      operationId: put-invoicing-private-ping
+      description: This is my PUT endpoint description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                test:
+                  type: boolean
+    delete:
+      summary: ping a DELETE
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ack:
+                    type: boolean
+      operationId: delete-invoicing-private-ping
+      description: This is my DELETE ping pong endpoint
+  /private/invoicing/sec-ping:
+    get:
+      summary: ping a GET
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingPong'
+              examples:
+                example-second-pong-get-query:
+                  value: pong
+      operationId: get-private-invoicing-sec-ping
+      description: Second Ping EndPoint
+    post:
+      summary: ping a POST
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+      operationId: post-private-invoicing-sec-ping
+      description: |+
+        # This is the POST endpoint for sec-ping
+
+        - say me pong
+        - I am ready to ack you
+        - Feed me with an *ack number* -plz-
+
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PingPongCommon'
+        description: |-
+          # Your body must be valide
+
+          If you do this I'll do that. THKS
+    put:
+      summary: ping a PUT
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+      operationId: put-private-invoicing-sec-ping
+      description: Toto
+    delete:
+      summary: ping a DELETE
+      tags:
+        - BASICS
+      responses:
+        '200':
+          description: OK
+      operationId: delete-private-invoicing-sec-ping
+      description: Toto
+  /types/all-of-my-tests:
+    get:
+      summary: combine part one and part two
+      tags:
+        - TESTS
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingPong'
+      operationId: get-types-all-of-my-tests
+      description: Totot
+    post:
+      summary: ''
+      operationId: post-types-all-of-my-tests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                enum:
+                  - a
+                  - B
+      description: Toto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/PartOne'
+                - $ref: '#/components/schemas/PartTwo'
+                - type: object
+            examples: {}
+      tags:
+        - TESTS
+    put:
+      summary: ''
+      operationId: put-types-all-of-my-tests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      description: Will try one of + discriminator
+      tags:
+        - TESTS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Invoice'
+                - $ref: '#/components/schemas/Order'
+              discriminator:
+                propertyName: type
+                mapping:
+                  invoice: '#/components/schemas/Invoice'
+                  order: '#/components/schemas/Order'
+components:
+  schemas:
+    PingPong:
+      title: PingPong
+      type: object
+      x-examples: {}
+      properties:
+        id:
+          type: string
+        response:
+          $ref: '#/components/schemas/PingPong'
+      description: This is PingPong Inside Model
+    PongResponse:
+      title: PongResponse
+      x-tags:
+        - TESTS
+      type: string
+    Invoice:
+      title: Invoice
+      allOf:
+        - $ref: '#/components/schemas/Payable'
+        - $ref: '#/components/schemas/InvoiceSpec'
+    InvoiceSpec:
+      title: InvoiceSpec
+      type: object
+      properties:
+        invoice_id:
+          type: string
+      required:
+        - invoice_id
+    Order:
+      title: Order
+      allOf:
+        - $ref: '#/components/schemas/Payable'
+        - $ref: '#/components/schemas/OrderSpec'
+    OrderSpec:
+      title: OrderSpec
+      type: object
+      properties:
+        order_id:
+          type: string
+      required:
+        - order_id
+    PartOne:
+      title: PartOne
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        job:
+          type: string
+      required:
+        - id
+        - name
+    PartTwo:
+      title: PartTwo
+      type: object
+      properties:
+        age:
+          type: integer
+      required:
+        - age
+    Payable:
+      title: Payable
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - order
+            - invoice
+        amount:
+          type: number
+      required:
+        - type
+        - amount
+    PingPongCommon:
+      title: PingPongCommon
+      type: object
+      properties:
+        id:
+          type: string
+          description: |-
+            PingPongCommon Id Description, *TOTO BOLD* Tu crois que j'ai le droit de mettre du MD ici
+            ```php
+            Et même du code ?
+            ```
+        response:
+          $ref: '#/components/schemas/PongResponse'
+        date:
+          $ref: '#/components/schemas/Timetamp'
+      required:
+        - id
+    TestAllTypes:
+      title: TestAllTypes
+      type: object
+      properties:
+        id:
+          type: string
+          format: date
+        test1:
+          type: array
+          uniqueItems: true
+          maxItems: 150
+          minItems: 5
+          items:
+            type: string
+            minLength: 2
+            maxLength: 5
+            pattern: '[a-m]*'
+        test2:
+          type: string
+          minLength: 2
+          maxLength: 5
+          pattern: '[a-m]*'
+        test3:
+          oneOf:
+            - $ref: '#/components/schemas/PingPongCommon'
+            - $ref: '#/components/schemas/PongResponse'
+        test4:
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/PingPongCommon'
+            - type:
+                - number
+                - string
+            - type:
+                - integer
+                - 'null'
+      required:
+        - id
+    Timetamp:
+      title: Timetamp
+      type: integer
+      format: int64
+      description: TimeStamp UNIX
+      x-tags:
+        - TESTS
+        - BASICS
+tags:
+  - name: AlphaB
+    description: Coucou
+  - name: BASICS
+    description: |-
+      #MarkDown Lover
+      Hello *Whaou* even there I can markdow it
+  - name: TESTS
+    description: "ben comme son nom l'indique lol"
